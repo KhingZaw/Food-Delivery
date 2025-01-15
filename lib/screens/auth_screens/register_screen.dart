@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/screens/auth_screens/widgets/button_widget.dart';
-import 'package:food_delivery/screens/auth_screens/widgets/text_field_widget.dart';
+import 'package:food_delivery/components/button_widget.dart';
+import 'package:food_delivery/components/text_field_widget.dart';
 import 'package:food_delivery/screens/home_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
