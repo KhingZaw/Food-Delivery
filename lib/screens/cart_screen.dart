@@ -117,12 +117,31 @@ class CartScreen extends StatelessWidget {
               //button to pay
               ButtonWidget(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentScreen(),
-                    ),
-                  );
+                  userCart.isEmpty
+                      ? showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(
+                              "Order is empty..",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            actions: [
+                              //cancel button
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Cancel"),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PaymentScreen(),
+                          ),
+                        );
                 },
                 text: 'Go to checkOut',
               ),

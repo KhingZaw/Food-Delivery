@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/models/restaurant.dart';
+import 'package:provider/provider.dart';
 
 class CurrentLocationWidget extends StatelessWidget {
-  const CurrentLocationWidget({super.key});
+  final TextEditingController textController = TextEditingController();
+  CurrentLocationWidget({super.key});
   void openLocationSearchBox(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text("Your Location"),
         content: TextField(
-          decoration: const InputDecoration(hintText: "Search address.."),
+          controller: textController,
+          decoration: const InputDecoration(hintText: "Enter address.."),
         ),
         actions: [
           //cancel button
@@ -18,7 +22,12 @@ class CurrentLocationWidget extends StatelessWidget {
           ),
           //save button
           MaterialButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              //update delivery address
+              String newAddress = textController.text;
+              context.read<Restaurant>().updateDeliveryAddress(newAddress);
+              Navigator.pop(context);
+            },
             child: const Text("Save"),
           ),
         ],
@@ -44,11 +53,13 @@ class CurrentLocationWidget extends StatelessWidget {
             child: Row(
               children: [
                 //address
-                Text(
-                  "6901 Hollywood Blv",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.inversePrimary,
+                Consumer<Restaurant>(
+                  builder: (context, restaurant, child) => Text(
+                    restaurant.deliveryAddress,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                    ),
                   ),
                 ),
 

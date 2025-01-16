@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/models/cart_item.dart';
 import 'package:food_delivery/models/food.dart';
+import 'package:intl/intl.dart';
 
 class Restaurant extends ChangeNotifier {
   //list of food menu
@@ -312,6 +313,12 @@ class Restaurant extends ChangeNotifier {
         ]),
   ];
 
+  // user cart
+  final List<CartItem> _cart = [];
+
+  //delivery address (which user can change/update)
+  String _deliveryAddress = '99 Hollywood Blv';
+
   /*
 
   G E T T E R S
@@ -319,14 +326,12 @@ class Restaurant extends ChangeNotifier {
   */
   List<Food> get menu => _menu;
   List<CartItem> get cart => _cart;
-
+  String get deliveryAddress => _deliveryAddress;
   /*
 
   O P E R A T I O N S
 
   */
-  // user cart
-  final List<CartItem> _cart = [];
 
   // add to cart
   void addToCart(Food food, List<Addon> selectedAddons) {
@@ -395,6 +400,13 @@ class Restaurant extends ChangeNotifier {
     _cart.clear();
     notifyListeners();
   }
+
+  // update delivery address
+  void updateDeliveryAddress(String newAddress) {
+    _deliveryAddress = newAddress;
+    notifyListeners();
+  }
+
   /*
 
   H E L P E R S
@@ -402,8 +414,47 @@ class Restaurant extends ChangeNotifier {
   */
 
   // generation a receipt
+  String displayCardReceipt() {
+    final receipt = StringBuffer();
+    receipt.writeln("Have's your receipt");
+    receipt.writeln();
+
+    //format the data to include up seconds only
+    String formattedDate =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+    receipt.writeln(formattedDate);
+    receipt.writeln();
+    receipt.writeln("----------");
+
+    for (final cartItem in _cart) {
+      receipt.writeln(
+          "${cartItem.quantity} x ${cartItem.food.name} - ${_formatPrice(cartItem.food.price)}");
+      if (cartItem.selectedAddons.isEmpty) {
+        receipt
+            .writeln("   Add-ons: ${_formatAddons(cartItem.selectedAddons)}");
+      }
+      receipt.writeln();
+    }
+    receipt.writeln("----------");
+    receipt.writeln();
+    receipt.writeln("Total Items: ${getTotalCount()}");
+    receipt.writeln("Total Items: ${_formatPrice(getTotalPrice())}");
+    receipt.writeln();
+    receipt.writeln("Delivering to: $deliveryAddress");
+
+    return receipt.toString();
+  }
 
   // format double value into money
+  String _formatPrice(double price) {
+    return "\$${price.toStringAsFixed(2)}";
+  }
 
   // format list of addons into a string summary
+  String _formatAddons(List<Addon> addons) {
+    return addons
+        .map((addon) => "${addon.name} (${_formatPrice(addon.price)})")
+        .join();
+  }
 }

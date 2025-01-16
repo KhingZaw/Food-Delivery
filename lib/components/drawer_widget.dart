@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/components/drawer_tile_widget.dart';
 import 'package:food_delivery/screens/settings_screen.dart';
+import 'package:food_delivery/services/auth/auth_service.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
+
+  void logOut() async {
+    final _authService = AuthService();
+
+    await _authService.singOut();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +55,7 @@ class DrawerWidget extends StatelessWidget {
           const Spacer(),
           DrawerTileWidget(
             text: "L O G O U T",
-            onTap: () {},
+            onTap: logOut,
             icon: Icons.logout,
           ),
           const SizedBox(

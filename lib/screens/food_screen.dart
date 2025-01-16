@@ -154,7 +154,7 @@ class _FoodScreenState extends State<FoodScreen> {
           child: Opacity(
             opacity: 0.6,
             child: Container(
-              margin: EdgeInsets.only(left: 25),
+              margin: EdgeInsets.only(left: 10),
               decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
                   shape: BoxShape.circle),

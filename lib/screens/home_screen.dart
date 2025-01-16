@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
 
                 //my current location
-                const CurrentLocationWidget(),
+                CurrentLocationWidget(),
 
                 //description box
                 DescriptionBox(),
