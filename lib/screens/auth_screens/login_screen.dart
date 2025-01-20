@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/components/button_widget.dart';
 import 'package:food_delivery/components/text_field_widget.dart';
 import 'package:food_delivery/services/auth/auth_service.dart';
+import 'package:food_delivery/themes/theme_provider.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   final void Function()? onTap;
@@ -52,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final imagePart = Provider.of<ThemeProvider>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
@@ -60,11 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               //logo
-              Icon(
-                Icons.lock_open_rounded,
-                size: 72,
-                color: Theme.of(context).colorScheme.inversePrimary,
-              ),
+              LottieBuilder.asset(imagePart.logoPath, height: 200, width: 200),
               const SizedBox(
                 height: 25,
               ),

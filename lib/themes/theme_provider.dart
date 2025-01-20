@@ -9,6 +9,12 @@ class ThemeProvider with ChangeNotifier {
 
   bool get isDarkMode => _themeData == darkMode;
 
+// Default to light mode
+  String _logoPath = "assets/images/logo/Animation_dark - 1737205427052.json";
+
+  // Getter for image path
+  String get logoPath => _logoPath;
+
   set themeData(ThemeData themeData) {
     _themeData = themeData;
     notifyListeners();
@@ -17,8 +23,10 @@ class ThemeProvider with ChangeNotifier {
   void toggleTheme() {
     if (_themeData == lightMode) {
       themeData = darkMode;
+      _logoPath = "assets/images/logo/Animation_light - 1737205427052.json";
     } else {
       themeData = lightMode;
+      _logoPath = "assets/images/logo/Animation_dark - 1737205427052.json";
     }
   }
 }

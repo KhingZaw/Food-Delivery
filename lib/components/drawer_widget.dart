@@ -17,14 +17,17 @@ class DrawerWidget extends StatelessWidget {
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.surface,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //app Logo
           Padding(
-            padding: const EdgeInsets.only(top: 100.0),
-            child: Icon(
-              Icons.lock_open_rounded,
-              size: 80,
-              color: Theme.of(context).colorScheme.inversePrimary,
+            padding: EdgeInsets.only(top: 50, left: 50),
+            child: SizedBox(
+              height: 150,
+              width: 200,
+              child: Image.asset(
+                "assets/images/logo/logo_icon.png",
+              ),
             ),
           ),
           Padding(
