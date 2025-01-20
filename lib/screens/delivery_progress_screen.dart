@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/components/my_receipt.dart';
 import 'package:food_delivery/models/restaurant.dart';
+import 'package:food_delivery/screens/home_screen.dart';
 import 'package:food_delivery/services/database/firestore_service.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +31,16 @@ class _DeliveryProgressScreenState extends State<DeliveryProgressScreen> {
         title: Text("Deliver in progress.."),
         centerTitle: true,
         backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // To home screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+            );
+          },
+        ),
       ),
       body: MyReceipt(),
       bottomNavigationBar: _buildButtonNavBar(context),
