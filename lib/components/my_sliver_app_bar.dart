@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:food_delivery/models/restaurant.dart';
-import 'package:food_delivery/screens/cart_screen.dart';
+import 'package:food_delivery/screens/user_screens/cart_screen.dart';
 import 'package:provider/provider.dart';
 
 class MySliverAppBar extends StatelessWidget {

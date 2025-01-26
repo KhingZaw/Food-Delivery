@@ -7,7 +7,7 @@ import 'package:food_delivery/components/my_sliver_app_bar.dart';
 import 'package:food_delivery/components/my_tap_bar.dart';
 import 'package:food_delivery/models/food.dart';
 import 'package:food_delivery/models/restaurant.dart';
-import 'package:food_delivery/screens/food_screen.dart';
+import 'package:food_delivery/screens/user_screens/food_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const DrawerWidget(),
+      drawer: DrawerWidget(),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           MySliverAppBar(

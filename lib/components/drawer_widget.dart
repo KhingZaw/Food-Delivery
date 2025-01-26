@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/components/drawer_tile_widget.dart';
-import 'package:food_delivery/screens/settings_screen.dart';
-import 'package:food_delivery/services/auth/auth_service.dart';
+import 'package:food_delivery/screens/user_screens/settings_screen.dart';
+import 'package:food_delivery/services/auth/setupLocator.dart';
+import 'package:food_delivery/services/auth/user_repository.dart';
 
 class DrawerWidget extends StatelessWidget {
-  const DrawerWidget({super.key});
+  DrawerWidget({super.key});
+  final UserRepository _userRepository = locator<UserRepository>();
 
   void logOut() async {
-    final _authService = AuthService();
-
-    await _authService.singOut();
+    await _userRepository.singOutUser();
   }
 
   @override

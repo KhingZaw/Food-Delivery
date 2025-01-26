@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final TextEditingController controller;
-  final String hintText;
+  final String labelText;
   final bool obscureText;
   const TextFieldWidget(
       {super.key,
       required this.controller,
-      required this.hintText,
-      required this.obscureText});
+      required this.obscureText,
+      required this.labelText});
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +18,17 @@ class TextFieldWidget extends StatelessWidget {
         controller: controller,
         obscureText: obscureText,
         decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: Theme.of(context).colorScheme.tertiary),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide:
-                  BorderSide(color: Theme.of(context).colorScheme.primary),
-            ),
-            hintText: hintText,
-            hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary)),
+          labelText: labelText,
+          labelStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+          enabledBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.tertiary),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.primary),
+          ),
+        ),
       ),
     );
   }

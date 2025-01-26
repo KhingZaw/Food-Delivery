@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/components/button_widget.dart';
+import 'package:food_delivery/components/password_field_widget.dart';
 import 'package:food_delivery/components/text_field_widget.dart';
+import 'package:food_delivery/screens/delivery_screens/delivery_home_screen.dart';
+import 'package:food_delivery/screens/user_screens/home_screen.dart';
 import 'package:food_delivery/services/auth/auth_service.dart';
+import 'package:food_delivery/services/auth/setupLocator.dart';
+import 'package:food_delivery/services/auth/user_repository.dart';
 import 'package:food_delivery/themes/theme_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -18,28 +23,64 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool isPasswordHidden = true;
+  bool isLoading = false;
+
+  final UserRepository _userRepository = locator<UserRepository>();
+
   //login method
   void login() async {
-    //get instance of auth service
-    final _authService = AuthService();
+    setState(() {
+      isLoading = true;
+    });
 
-    //try sign in
     try {
-      await _authService.signInWithEmailPassword(
-          emailController.text, passwordController.text);
-    }
+      // Attempt to log in and fetch the user's role
+      final String? role = await _userRepository.signInAndFetchRole(
+        emailController.text,
+        passwordController.text,
+      );
 
-    //display any error
-    catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+
+      if (role == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Login Failed: Role not found!")),
+        );
+        return;
+      }
+
+      // Navigate based on role
+      if (role.toLowerCase() == "delivery") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => DeliveryHomeScreen()),
+        );
+      } else if (role.toLowerCase() == "user") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => HomeScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Login Failed: Invalid role!")),
+        );
+      }
+    } catch (e) {
+      // Show error dialog
       showDialog(
-        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
-          title: Text(
-            e.toString(),
-          ),
+          title: const Text("Login Failed"),
+          content: Text(e.toString()),
         ),
       );
+
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -81,43 +122,39 @@ class _LoginScreenState extends State<LoginScreen> {
               //email textfield
               TextFieldWidget(
                 controller: emailController,
-                hintText: 'Email',
+                labelText: 'Email',
                 obscureText: false,
               ),
-
-              const SizedBox(
+              SizedBox(
                 height: 10,
               ),
               //password textfield
-              TextFieldWidget(
+              PasswordFieldWidget(
                 controller: passwordController,
-                hintText: 'Password',
-                obscureText: true,
+                labelText: "Password",
               ),
 
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: forgotPw,
+                    child: Text("forgot password"),
+                  ),
+                ],
+              ),
               const SizedBox(
                 height: 5,
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: forgotPw,
-                      child: Text("forgot password"),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
               //sign in button
-              ButtonWidget(
-                text: "Sign In",
-                onTap: login,
-              ),
+              isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ButtonWidget(
+                      text: "Sign Up",
+                      onTap: login,
+                    ),
 
               const SizedBox(
                 height: 25,

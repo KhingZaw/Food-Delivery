@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/components/my_cart_tile.dart';
 import 'package:food_delivery/models/restaurant.dart';
 import 'package:food_delivery/components/button_widget.dart';
-import 'package:food_delivery/screens/payment_screen.dart';
+import 'package:food_delivery/screens/user_screens/payment_screen.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/components/button_widget.dart';
+import 'package:food_delivery/components/password_field_widget.dart';
 import 'package:food_delivery/components/text_field_widget.dart';
-import 'package:food_delivery/services/auth/auth_service.dart';
+import 'package:food_delivery/screens/auth_screens/register_role_screen.dart';
 import 'package:food_delivery/themes/theme_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -19,40 +20,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+
+  bool isLoading = false;
+
   //login method
   void login() async {
-    // get auth service
-    final _authService = AuthService();
-
-    //check if password match => create user
-    if (passwordController.text == confirmPasswordController.text) {
-      //try creating user
-      try {
-        await _authService.signUpWithEmailPassword(
-            emailController.text, passwordController.text);
-      }
-      //display any errors
-      catch (e) {
-        showDialog(
-          // ignore: use_build_context_synchronously
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(
-              e.toString(),
-            ),
-          ),
-        );
-      }
-    }
-    //if password don't match -> show error
-    else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("Password don't match!"),
-        ),
+    setState(() {
+      isLoading = true;
+    });
+    // Check if passwords match
+    if (passwordController.text != confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Passwords don't match!")),
       );
+      setState(() {
+        isLoading = false;
+      });
+      return;
     }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => RegisterRoleScreen(
+          email: emailController.text,
+          password: passwordController.text,
+        ),
+      ),
+    );
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -78,10 +76,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(
                 height: 25,
               ),
+
               //email textfield
               TextFieldWidget(
                 controller: emailController,
-                hintText: 'Email',
+                labelText: 'Email',
                 obscureText: false,
               ),
 
@@ -89,28 +88,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 10,
               ),
               //password textfield
-              TextFieldWidget(
-                controller: passwordController,
-                hintText: 'Password',
-                obscureText: true,
-              ),
+              PasswordFieldWidget(
+                  controller: passwordController, labelText: "Password"),
+
               const SizedBox(
                 height: 10,
               ),
-              //confirm password textfield
-              TextFieldWidget(
-                controller: confirmPasswordController,
-                hintText: 'Confirm password',
-                obscureText: true,
-              ),
+              // confirm password textfield
+              PasswordFieldWidget(
+                  controller: confirmPasswordController,
+                  labelText: "Confirm Password"),
+
               const SizedBox(
                 height: 25,
               ),
               //sign up button
-              ButtonWidget(
-                text: "Sign Up",
-                onTap: login,
-              ),
+              isLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ButtonWidget(
+                      text: "Sign Up",
+                      onTap: login,
+                    ),
               const SizedBox(
                 height: 25,
               ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/components/my_receipt.dart';
 import 'package:food_delivery/models/restaurant.dart';
-import 'package:food_delivery/screens/home_screen.dart';
+import 'package:food_delivery/screens/user_screens/home_screen.dart';
 import 'package:food_delivery/services/database/firestore_service.dart';
 import 'package:provider/provider.dart';
 
