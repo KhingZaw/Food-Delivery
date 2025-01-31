@@ -4,8 +4,8 @@ import 'package:food_delivery/components/button_widget.dart';
 import 'package:food_delivery/components/text_field_widget.dart';
 import 'package:food_delivery/screens/delivery_screens/delivery_home_screen.dart';
 import 'package:food_delivery/screens/user_screens/home_screen.dart';
-import 'package:food_delivery/services/auth/setupLocator.dart';
-import 'package:food_delivery/services/auth/user_repository.dart';
+import 'package:food_delivery/services/repository/setupLocator.dart';
+import 'package:food_delivery/services/repository/user_repository.dart';
 import 'package:image_picker/image_picker.dart';
 
 class RegisterRoleScreen extends StatefulWidget {

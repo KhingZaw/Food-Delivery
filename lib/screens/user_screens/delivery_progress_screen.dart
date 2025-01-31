@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:food_delivery/components/my_receipt.dart';
 import 'package:food_delivery/models/restaurant.dart';
+import 'package:food_delivery/screens/chat/chat_screen.dart';
 import 'package:food_delivery/screens/user_screens/delivery_info.dart';
 import 'package:food_delivery/screens/user_screens/home_screen.dart';
-import 'package:food_delivery/services/auth/setupLocator.dart';
-import 'package:food_delivery/services/auth/user_repository.dart';
+import 'package:food_delivery/services/notification/noti_service.dart';
+import 'package:food_delivery/services/repository/setupLocator.dart';
+import 'package:food_delivery/services/repository/user_repository.dart';
 import 'package:provider/provider.dart';
 
 class DeliveryProgressScreen extends StatefulWidget {
@@ -23,31 +24,58 @@ class _DeliveryProgressScreenState extends State<DeliveryProgressScreen> {
   void initState() {
     super.initState();
     fetchRandomDeliveryUser();
-    //if we get to this page, submit order to firestore db
-    String receipt = context.read<Restaurant>().displayCardReceipt();
-    _userRepository.saveOrderToData(receipt);
   }
 
   Map<String, dynamic>? deliveryUser;
+  Map<String, dynamic>? currentUser;
   void fetchRandomDeliveryUser() async {
     final randomUser = await _userRepository.randomDelivery();
-
+    final user = await _userRepository.getCurrentUserData();
     if (randomUser != null) {
       setState(() {
         deliveryUser = randomUser;
+        currentUser = user;
       });
+      // Now that we have the users, save the order
+      String receipt = context.read<Restaurant>().displayCardReceipt();
+
+      await _userRepository.saveOrderToData(
+        receipt,
+        currentUser!["email"],
+        deliveryUser!["email"],
+      );
+      NotiService().showNotification(title: "Receive Order");
     } else {
       print("No delivery users found!");
     }
   }
 
-  void onTap() async {
-    final userByEmail = await _userRepository.getEmail(deliveryUser?["email"]);
-    if (userByEmail != null) {
+  void infoTap() async {
+    final userByEmail =
+        await _userRepository.getUserByEmail(deliveryUser?["email"]);
+    if (userByEmail != currentUser?["email"]) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => DeliveryInfo(email: deliveryUser!['email']),
+          builder: (_) => DeliveryInfo(email: userByEmail!['email']),
+        ),
+      );
+    } else {
+      print("Email is not return");
+    }
+  }
+
+  void chatTap() async {
+    final userByEmail =
+        await _userRepository.getUserByEmail(deliveryUser?["email"]);
+    if (userByEmail != currentUser?["email"]) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ChatScreen(
+              email: userByEmail!['email'],
+              receiverID: userByEmail["uid"],
+              name: userByEmail["name"]),
         ),
       );
     } else {
@@ -99,7 +127,7 @@ class _DeliveryProgressScreenState extends State<DeliveryProgressScreen> {
                 shape: BoxShape.circle,
               ),
               child: IconButton(
-                onPressed: onTap,
+                onPressed: infoTap,
                 icon: Icon(Icons.person),
               ),
             ),
@@ -108,7 +136,7 @@ class _DeliveryProgressScreenState extends State<DeliveryProgressScreen> {
             ),
             //delivery detail
             GestureDetector(
-              onTap: onTap,
+              onTap: infoTap,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -139,7 +167,7 @@ class _DeliveryProgressScreenState extends State<DeliveryProgressScreen> {
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: chatTap,
                     icon: Icon(
                       Icons.message,
                       color: Theme.of(context).colorScheme.primary,
@@ -157,8 +185,8 @@ class _DeliveryProgressScreenState extends State<DeliveryProgressScreen> {
                   ),
                   child: IconButton(
                     onPressed: () {
-                      FlutterPhoneDirectCaller.callNumber(
-                          deliveryUser?["phone_number"]);
+                      //   FlutterPhoneDirectCaller.callNumber(
+                      //       deliveryUser?["phone_number"]);
                     },
                     icon: Icon(
                       Icons.call,

@@ -10,15 +10,6 @@ class FirestoreService {
   final CollectionReference orders =
       FirebaseFirestore.instance.collection('orders');
 
-  //save order to db
-  Future<void> saveOrderToDatabase(String receipt) async {
-    await orders.add({
-      'date': DateTime.now(),
-      'order': receipt,
-      //add more fields as necessary..
-    });
-  }
-
   final FirebaseFirestore _firestore;
   FirestoreService(this._firestore);
 
@@ -112,5 +103,13 @@ class FirestoreService {
     }
 
     return base64Encode(imageBytes);
+  }
+
+  getOrdersForDeliveryUser(String deliveryEmail) {
+    return _firestore
+        .collection("orders")
+        .where("delivery_email", isEqualTo: deliveryEmail) // Filter orders
+        .orderBy("timestamp", descending: true) // Sort latest orders first
+        .get();
   }
 }

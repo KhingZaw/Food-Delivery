@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:food_delivery/services/auth/setupLocator.dart';
-import 'package:food_delivery/services/auth/user_repository.dart';
+import 'package:food_delivery/services/repository/setupLocator.dart';
+import 'package:food_delivery/services/repository/user_repository.dart';
 
 class DeliveryInfo extends StatefulWidget {
   final String email;
@@ -21,7 +21,7 @@ class _DeliveryInfoState extends State<DeliveryInfo> {
   }
 
   Future<void> fetchDeliveryUser() async {
-    final user = await _userRepository.getEmail(widget.email);
+    final user = await _userRepository.getUserByEmail(widget.email);
     setState(() {
       deliveryUser = user;
     });

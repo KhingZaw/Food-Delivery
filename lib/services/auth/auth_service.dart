@@ -5,9 +5,20 @@ class AuthService {
   final FirebaseAuth _firebaseAuth;
 
   AuthService(this._firebaseAuth);
+
   //get current user
   User? getCurrentUser() {
     return _firebaseAuth.currentUser;
+  }
+
+  /// Get the current user UID
+  String? getCurrentUserUID() {
+    return _firebaseAuth.currentUser!.uid;
+  }
+
+  /// Get the current user email
+  String? getCurrentUserEmail() {
+    return _firebaseAuth.currentUser!.email!;
   }
 
   //sing up
@@ -34,7 +45,7 @@ class AuthService {
   }
 
   //sing out
-  Future<void> singOut() async {
-    return await _firebaseAuth.signOut();
+  Future<void> singOutUser() async {
+    await _firebaseAuth.signOut();
   }
 }

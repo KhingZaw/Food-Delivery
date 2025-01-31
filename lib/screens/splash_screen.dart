@@ -1,6 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery/services/auth/auth_gate.dart';
+import 'package:food_delivery/services/repository/auth_gate.dart';
 import 'package:food_delivery/themes/theme_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:food_delivery/services/auth/setupLocator.dart';
-import 'package:food_delivery/services/auth/user_repository.dart';
+import 'package:food_delivery/services/repository/setupLocator.dart';
+import 'package:food_delivery/services/repository/user_repository.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -44,6 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           : userData != null
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     CircleAvatar(
                       radius: 50,

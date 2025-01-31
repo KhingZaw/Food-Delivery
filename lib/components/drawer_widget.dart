@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/components/drawer_tile_widget.dart';
 import 'package:food_delivery/screens/user_screens/profile_screen.dart';
 import 'package:food_delivery/screens/user_screens/settings_screen.dart';
-import 'package:food_delivery/services/auth/setupLocator.dart';
-import 'package:food_delivery/services/auth/user_repository.dart';
+import 'package:food_delivery/services/repository/setupLocator.dart';
+import 'package:food_delivery/services/repository/user_repository.dart';
 
 class DrawerWidget extends StatelessWidget {
   DrawerWidget({super.key});
@@ -49,7 +49,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
               );
             },
-            icon: Icons.co_present_outlined,
+            icon: Icons.person,
           ),
           //home list title
           DrawerTileWidget(
