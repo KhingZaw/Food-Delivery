@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/components/drawer_tile_widget.dart';
+import 'package:food_delivery/screens/user_screens/profile_screen.dart';
 import 'package:food_delivery/screens/user_screens/settings_screen.dart';
 import 'package:food_delivery/services/auth/setupLocator.dart';
 import 'package:food_delivery/services/auth/user_repository.dart';
@@ -35,6 +36,20 @@ class DrawerWidget extends StatelessWidget {
             child: Divider(
               color: Theme.of(context).colorScheme.secondary,
             ),
+          ),
+          //profile screen
+          DrawerTileWidget(
+            text: "P R O F I L E",
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileScreen(),
+                ),
+              );
+            },
+            icon: Icons.co_present_outlined,
           ),
           //home list title
           DrawerTileWidget(

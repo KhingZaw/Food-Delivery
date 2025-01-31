@@ -28,6 +28,10 @@ class TextFieldWidget extends StatelessWidget {
             borderSide:
                 BorderSide(color: Theme.of(context).colorScheme.primary),
           ),
+          hintText: "",
+          hintStyle: TextStyle(
+            color: Theme.of(context).colorScheme.inversePrimary,
+          ),
         ),
       ),
     );

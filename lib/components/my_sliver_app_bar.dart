@@ -23,7 +23,7 @@ class MySliverAppBar extends StatelessWidget {
           badges.Badge(
             position: badges.BadgePosition.topEnd(top: 0, end: 7),
             badgeStyle: badges.BadgeStyle(
-              badgeColor: Colors.blue,
+              badgeColor: Colors.red,
               shape: badges.BadgeShape.circle,
               padding: const EdgeInsets.all(6),
               borderRadius: BorderRadius.circular(8),

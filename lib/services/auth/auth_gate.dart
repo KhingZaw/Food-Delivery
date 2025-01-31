@@ -34,7 +34,7 @@ class AuthGate extends StatelessWidget {
                   return const HomeScreen();
                 }
 
-                return const Center(child: Text('Error: Role not recognized.'));
+                return const LoginOrRegister();
               },
             );
           }

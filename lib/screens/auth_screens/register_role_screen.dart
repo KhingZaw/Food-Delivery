@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/components/button_widget.dart';
 import 'package:food_delivery/components/text_field_widget.dart';
@@ -5,9 +6,7 @@ import 'package:food_delivery/screens/delivery_screens/delivery_home_screen.dart
 import 'package:food_delivery/screens/user_screens/home_screen.dart';
 import 'package:food_delivery/services/auth/setupLocator.dart';
 import 'package:food_delivery/services/auth/user_repository.dart';
-import 'package:food_delivery/themes/theme_provider.dart';
-import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterRoleScreen extends StatefulWidget {
   final String email;
@@ -25,22 +24,43 @@ class RegisterRoleScreen extends StatefulWidget {
 
 class _RegisterRoleScreenState extends State<RegisterRoleScreen> {
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  File? profileImage; //changed from URl to file
   String selectedRole = "User";
   bool isLoading = false;
 
   final UserRepository _userRepository = locator<UserRepository>();
 
+  //Pick and Upload Image**
+  Future<void> pickAndUploadImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        profileImage = File(pickedFile.path);
+      });
+    }
+  }
+
   void completeRegistration() async {
     setState(() {
       isLoading = true;
     });
-
+    if (profileImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please upload a profile picture.")),
+      );
+      return;
+    }
     try {
       await _userRepository.signUpUser(
         widget.email,
         widget.password,
         nameController.text,
         selectedRole,
+        phoneController.text,
+        profileImage!, // Passing the correct File object
       );
 
       setState(() {
@@ -81,7 +101,6 @@ class _RegisterRoleScreenState extends State<RegisterRoleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final imagePart = Provider.of<ThemeProvider>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
@@ -89,8 +108,20 @@ class _RegisterRoleScreenState extends State<RegisterRoleScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              //logo
-              LottieBuilder.asset(imagePart.logoPath, height: 200, width: 200),
+              // Display Profile Image
+              CircleAvatar(
+                radius: 60,
+                backgroundImage: profileImage != null
+                    ? FileImage(profileImage!) // Show picked image
+                    : AssetImage("assets/images/logo/logo_icon.png")
+                        as ImageProvider,
+              ),
+              const SizedBox(height: 20),
+              // Upload Button
+              ElevatedButton(
+                onPressed: pickAndUploadImage,
+                child: const Text("Upload Profile Picture"),
+              ),
               const SizedBox(
                 height: 25,
               ),
@@ -104,7 +135,7 @@ class _RegisterRoleScreenState extends State<RegisterRoleScreen> {
               const SizedBox(
                 height: 25,
               ),
-              //email textfield
+              //name textfield
               TextFieldWidget(
                 controller: nameController,
                 labelText: 'Name',
@@ -114,6 +145,17 @@ class _RegisterRoleScreenState extends State<RegisterRoleScreen> {
               const SizedBox(
                 height: 10,
               ),
+              //phone number textfield
+              TextFieldWidget(
+                controller: phoneController,
+                labelText: 'Phone Number',
+                obscureText: false,
+              ),
+
+              const SizedBox(
+                height: 10,
+              ),
+
               Padding(
                 padding: const EdgeInsets.only(right: 25, left: 25),
                 child: DropdownButtonFormField(

@@ -4,7 +4,6 @@ import 'package:food_delivery/components/password_field_widget.dart';
 import 'package:food_delivery/components/text_field_widget.dart';
 import 'package:food_delivery/screens/delivery_screens/delivery_home_screen.dart';
 import 'package:food_delivery/screens/user_screens/home_screen.dart';
-import 'package:food_delivery/services/auth/auth_service.dart';
 import 'package:food_delivery/services/auth/setupLocator.dart';
 import 'package:food_delivery/services/auth/user_repository.dart';
 import 'package:food_delivery/themes/theme_provider.dart';

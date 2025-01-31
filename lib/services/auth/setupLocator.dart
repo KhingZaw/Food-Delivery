@@ -1,3 +1,4 @@
+import 'package:food_delivery/services/database/firestore_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
