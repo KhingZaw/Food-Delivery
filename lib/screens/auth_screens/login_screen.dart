@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/components/button_widget.dart';
 import 'package:food_delivery/components/password_field_widget.dart';
 import 'package:food_delivery/components/text_field_widget.dart';
+import 'package:food_delivery/screens/auth_screens/forget_password.dart';
 import 'package:food_delivery/screens/delivery_screens/delivery_home_screen.dart';
 import 'package:food_delivery/screens/user_screens/home_screen.dart';
 import 'package:food_delivery/services/repository/setupLocator.dart';
@@ -83,105 +84,109 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void forgotPw() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        title: Text("User tapped forgot password"),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final imagePart = Provider.of<ThemeProvider>(context);
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //logo
-              LottieBuilder.asset(imagePart.logoPath, height: 200, width: 200),
-              const SizedBox(
-                height: 25,
-              ),
-              //message, app slogan
-              Text(
-                "Food Delivery App",
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.inversePrimary),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              //email textfield
-              TextFieldWidget(
-                controller: emailController,
-                labelText: 'Email',
-                obscureText: false,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              //password textfield
-              PasswordFieldWidget(
-                controller: passwordController,
-                labelText: "Password",
-              ),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //logo
+                LottieBuilder.asset(imagePart.logoPath,
+                    height: 200, width: 200),
+                const SizedBox(
+                  height: 25,
+                ),
+                //message, app slogan
+                Text(
+                  "Food Delivery App",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.inversePrimary),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                //email textfield
+                TextFieldWidget(
+                  controller: emailController,
+                  labelText: 'Email',
+                  obscureText: false,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                //password textfield
+                PasswordFieldWidget(
+                  controller: passwordController,
+                  labelText: "Password",
+                ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: forgotPw,
-                    child: Text("forgot password"),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              //sign in button
-              isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ButtonWidget(
-                      text: "Sign Up",
-                      onTap: login,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (c) => ForgetPassword(),
+                        ),
+                      ),
+                      child: Text("forgot password ?"),
                     ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                //sign in button
+                isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ButtonWidget(
+                        text: "Sign Up",
+                        onTap: login,
+                      ),
 
-              const SizedBox(
-                height: 25,
-              ),
-              //not a member? register now
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Not a member?",
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.inversePrimary),
-                  ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  GestureDetector(
-                    onTap: widget.onTap,
-                    child: Text(
-                      "Register now",
+                const SizedBox(
+                  height: 25,
+                ),
+                //not a member? register now
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Not a member?",
                       style: TextStyle(
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                          fontWeight: FontWeight.bold),
+                          color: Theme.of(context).colorScheme.inversePrimary),
                     ),
-                  ),
-                ],
-              )
-            ],
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: Text(
+                        "Register now",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

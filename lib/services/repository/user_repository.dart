@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_delivery/models/message.dart';
 import 'package:food_delivery/services/chats/chat_service.dart';
 import 'package:food_delivery/services/database/firestore_service.dart';
@@ -193,5 +194,15 @@ class UserRepository {
       print("Error fetching order details: $e");
     }
     return null; // Return null if the order doesn't exist
+  }
+
+  Future<bool> resetPassword({required String email}) async {
+    try {
+      await _authService.sendPasswordResetEmail(email: email.trim());
+      return true;
+    } catch (e) {
+      Fluttertoast.showToast(msg: "An unknown error occurred: ${e.toString()}");
+      return false;
+    }
   }
 }

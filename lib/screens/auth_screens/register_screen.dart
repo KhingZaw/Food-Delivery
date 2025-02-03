@@ -9,7 +9,12 @@ import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   final void Function()? onTap;
-  const RegisterScreen({super.key, required this.onTap});
+  final bool forgetPassword;
+  const RegisterScreen({
+    super.key,
+    this.onTap,
+    this.forgetPassword = false,
+  });
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -56,91 +61,103 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final imagePart = Provider.of<ThemeProvider>(context);
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //logo
-              LottieBuilder.asset(imagePart.logoPath, height: 200, width: 200),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //logo
+                LottieBuilder.asset(imagePart.logoPath,
+                    height: 200, width: 200),
 
-              //message, app slogan
-              Text(
-                "Let's create an account for you",
-                style: TextStyle(
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.inversePrimary),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
+                //message, app slogan
+                Text(
+                  "Let's create an account for you",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.inversePrimary),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
 
-              //email textfield
-              TextFieldWidget(
-                controller: emailController,
-                labelText: 'Email',
-                obscureText: false,
-              ),
+                //email textfield
+                TextFieldWidget(
+                  controller: emailController,
+                  labelText: 'Email',
+                  obscureText: false,
+                ),
 
-              const SizedBox(
-                height: 10,
-              ),
-              //password textfield
-              PasswordFieldWidget(
-                  controller: passwordController, labelText: "Password"),
+                const SizedBox(
+                  height: 10,
+                ),
+                //password textfield
+                PasswordFieldWidget(
+                    controller: passwordController, labelText: "Password"),
 
-              const SizedBox(
-                height: 10,
-              ),
-              // confirm password textfield
-              PasswordFieldWidget(
-                  controller: confirmPasswordController,
-                  labelText: "Confirm Password"),
+                const SizedBox(
+                  height: 10,
+                ),
+                // confirm password textfield
+                PasswordFieldWidget(
+                    controller: confirmPasswordController,
+                    labelText: "Confirm Password"),
 
-              const SizedBox(
-                height: 25,
-              ),
-              //sign up button
-              isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ButtonWidget(
-                      text: "Sign Up",
-                      onTap: login,
-                    ),
-              const SizedBox(
-                height: 25,
-              ),
-              //already have an account? Login here
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already have an account?",
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.inversePrimary),
-                  ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  GestureDetector(
-                    onTap: widget.onTap,
-                    child: Text(
-                      "Login here",
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-            ],
+                const SizedBox(
+                  height: 25,
+                ),
+                //sign up button
+                isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ButtonWidget(
+                        text: "Sign Up",
+                        onTap: login,
+                      ),
+                const SizedBox(
+                  height: 25,
+                ),
+                //already have an account? Login here
+                widget.forgetPassword
+                    ? SizedBox()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Already have an account?",
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary),
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          GestureDetector(
+                            onTap: widget.onTap,
+                            child: Text(
+                              "Login here",
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
           ),
         ),
       ),
